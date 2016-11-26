@@ -38,6 +38,7 @@ RUN zypper --no-gpg-checks --non-interactive dist-upgrade && \
   libcurl-devel \
   libncurses5 \
   libopenssl-devel \
+  libpcre2-8-0 \
   libxml2-tools \
   lua \
   lua-devel \
@@ -69,9 +70,9 @@ RUN zypper --no-gpg-checks --non-interactive dist-upgrade && \
 # Coala setup and python deps
 RUN pip3 install --upgrade pip
 
-RUN git clone https://github.com/coala/coala.git
+RUN git clone https://github.com/mixih/coala.git
 WORKDIR /coala
-RUN git checkout release/$COALA_VERSION
+RUN git checkout backport_BearTest_fix
 RUN pip3 install -r requirements.txt
 RUN pip3 install -r test-requirements.txt
 RUN pip3 install -e .
@@ -126,7 +127,7 @@ RUN source /etc/profile.d/go.sh \
 # ENV PATH=$PATH:/home/opam/infer-linux64-v0.9.0/infer/bin
 
 # Julia setup
-# RUN ["julia", "-e", "\\"Pkg.add(\\\\"Lint\\\\")\\""]
+RUN julia -e 'Pkg.add("'Lint'")'
 
 # Lua commands
 RUN luarocks install luacheck
